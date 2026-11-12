@@ -1,0 +1,22 @@
+# systemd alternative to Docker. Assumes: project in /opt/kaamsetu, Node 22.13+ at /usr/bin/node, user "kaamsetu",
+# data in /var/lib/kaamsetu, settings in /etc/kaamsetu/kaamsetu.env, and a TLS reverse proxy (see nginx.conf) in front.
+[Unit]
+Description=KAAMSETU API and website
+After=network.target
+
+[Service]
+User=kaamsetu
+WorkingDirectory=/opt/kaamsetu/kaamsetu-backend
+EnvironmentFile=/etc/kaamsetu/kaamsetu.env
+ExecStart=/usr/bin/node --no-warnings src/server.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/kaamsetu
+StateDirectory=kaamsetu
+
+[Install]
+WantedBy=multi-user.target

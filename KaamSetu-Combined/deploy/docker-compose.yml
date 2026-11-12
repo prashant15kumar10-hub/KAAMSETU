@@ -1,0 +1,31 @@
+# Run from the deploy/ folder:   cp .env.production.example .env   (edit it)   then   docker compose up -d --build
+# Caddy obtains and renews the HTTPS certificate automatically for DOMAIN (ports 80 and 443 must reach this machine,
+# and DOMAIN's DNS must already point here). The app itself is NOT published to the internet.
+services:
+  app:
+    build: { context: .., dockerfile: deploy/Dockerfile }
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      DEPLOYMENT_NETWORK_ISOLATED: "true"
+      TRUST_PROXY: "true"          # safe here only because Caddy is the sole way in
+      BACKUP_INTERVAL_HOURS: "6"   # verified backups into /data/backups (same volume: see docs/OPERATIONS.md for off-site copies)
+      BACKUP_KEEP: "28"
+    volumes: [ "kaamsetu-data:/data" ]
+    expose: [ "3000" ]
+    logging: { driver: json-file, options: { max-size: "10m", max-file: "5" } }
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on: [ app ]
+    ports: [ "80:80", "443:443" ]
+    environment: { DOMAIN: "${DOMAIN}" }
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+volumes:
+  kaamsetu-data:
+  caddy-data:
+  caddy-config:

@@ -1,0 +1,22 @@
+{
+  "name": "kaamsetu-backend",
+  "version": "0.2.0",
+  "description": "Backend API for the KAAMSETU frontend (zero runtime dependencies, Node 22+).",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "STATIC_DIR=../kaamsetu-frontend node src/server.js",
+    "test": "node --no-warnings --test test/*.test.js",
+    "seed": "node --no-warnings scripts/seed.js",
+    "create-admin": "node --no-warnings scripts/create-admin.js",
+    "backup": "node --no-warnings scripts/backup.js",
+    "restore": "node --no-warnings scripts/restore.js",
+    "healthcheck": "node scripts/healthcheck.js",
+    "production-check": "node scripts/production-check.js",
+    "test-alert": "node --no-warnings scripts/test-alert.js"
+  }
+}

@@ -1,0 +1,16 @@
+KAAMSETU SECURITY-HARDENED VALIDATION RESULTS
+
+Automated backend tests: PASS — 59 tests, 0 failures
+Identity verification flow: PASS — mock HTTPS-delivery-adapter contract, OTP confirmation, no session before verification
+Admin MFA flow: PASS — TOTP enrollment required, subsequent TOTP login required, bad code rejected
+CSP source checks: PASS — no inline onclick/onchange/onsubmit handlers; script-src-attr 'none'
+Action dispatcher tests: PASS — literal-only calls parsed; executable expressions rejected
+JavaScript syntax checks: PASS — changed backend and frontend JS
+Production preflight: PASS — tested with required flags, provider settings, and static path; DB file did not exist yet
+SQLite file permission handling: implemented for POSIX; verify actual runtime files after first startup
+Local HTTP smoke test: PASS — /, /js/config.js, /js/api.js, /js/app.js, /api/health, /api/ready, /api/capabilities all returned HTTP 200; readiness reported schema_version 3; CSP contained script-src-attr 'none'
+SQLite permissions: PASS — database, WAL, and SHM files were mode 600 on the Linux test host
+Production preflight: PASS with configured test environment; live DNS/TLS/firewall checks remain manual
+ZIP integrity: PASS (checked after final packaging)
+
+NOT COMPLETED: browser journey (Chromium navigation blocked by execution environment), live DNS/TLS/firewall/secret-manager verification, off-site backup restore drill, independent penetration test.
